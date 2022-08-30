@@ -39,6 +39,10 @@
         (cons (car lst) (list-ref-set-aux (cdr lst) (- n 1)))))
   (list-ref-set-aux lst n))
 
+(define (keys+values->alternating-list keys values)
+  (define (append-map f l1 l2) (apply append (map f l1 l2)))
+  (append-map list keys values))
+
 ;;; Lens related functionality
 (define-record lens (getter setter))
 
@@ -82,6 +86,13 @@
 
 (define (lens-compose . args)
   (fold-left lens-compose2 identity-lens args))
+
+(define (lens-join/list . lenses)
+  (define (getter target)
+    (apply lens-view/list target lenses))
+  (define (setter target new-views)
+    (apply lens-set/list target (keys+values->alternating-list lenses new-views)))
+  (make-lens getter setter))
 
 ;;; Lenses
 (define identity-lens
