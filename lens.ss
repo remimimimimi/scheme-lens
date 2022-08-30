@@ -137,3 +137,14 @@
 
 (define (list-refs-lens . indices)
  (apply lens-join/list (map list-ref-lens indices)))
+
+;; Hashtable lenses
+(define (hashtable-ref-lens-aux key default-value)
+  (define (hashtable-get table) (hashtable-ref table key default-value))
+  (define hashtable-set (immutable-set hashtable-copy (lambda (table value) (hashtable-aux-set! table key value))))
+  (make-lens hashtable-get
+             hashtable-set))
+(define hashtable-ref-lens
+  (case-lambda
+   [(key) (hashtable-ref-lens-aux key #f)]
+   [(key default-value) (hashtable-ref-lens-aux key default-value)]))
