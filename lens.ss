@@ -68,8 +68,18 @@
 (define identity-lens
   (make-lens (lambda (x) x) (lambda (x value) value)))
 
-(define car-lens
-  (make-lens car (immutable-set list-copy set-car!)))
-
-(define cdr-lens
-  (make-lens cdr (immutable-set list-copy set-cdr!)))
+;; Pair lenses
+(define car-lens (make-lens car (immutable-set list-copy set-car!)))
+(define cdr-lens (make-lens cdr (immutable-set list-copy set-cdr!)))
+(define caar-lens (lens-compose car-lens car-lens))
+(define cadr-lens (lens-compose car-lens cdr-lens))
+(define cdar-lens (lens-compose cdr-lens car-lens))
+(define cddr-lens (lens-compose cdr-lens cdr-lens))
+(define caaar-lens (lens-compose car-lens caar-lens))
+(define cdaar-lens (lens-compose cdr-lens caar-lens))
+(define cadar-lens (lens-compose car-lens cdar-lens))
+(define cddar-lens (lens-compose cdr-lens cdar-lens))
+(define caadr-lens (lens-compose car-lens cadr-lens))
+(define cdadr-lens (lens-compose cdr-lens cadr-lens))
+(define caddr-lens (lens-compose car-lens cddr-lens))
+(define cdddr-lens (lens-compose cdr-lens cddr-lens))
