@@ -43,6 +43,14 @@
 (define (lens-transform lens target transformer)
   ((lens-setter lens) target (transformer (lens-view lens target))))
 
+(define (lens-transform/list target . lens-and-fns)
+  (fold-left
+   (lambda (value lens-and-fn)
+     (define lens (car lens-and-fn))
+     (define fn (cadr lens-and-fn))
+     (lens-transform lens value fn))
+   target (split-into-chunks 2 lens-and-fns)))
+
 ;;; Lenses
 (define identity-lens
   (make-lens (lambda (x) x) (lambda (x value) value)))
