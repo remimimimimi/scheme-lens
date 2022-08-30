@@ -7,6 +7,7 @@
 (import (rnrs))
 (import (srfi s1 lists))
 
+;; Various utils
 (define (split-into-chunks n xs)
   (if (null? xs)
       '()
