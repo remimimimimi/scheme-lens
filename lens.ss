@@ -21,7 +21,7 @@
     value-copy))
 
 ;;; Lens related functionality
-(define-structure (lens getter setter))
+(define-record lens (getter setter))
 
 (define (lens-view lens target)
   ((lens-getter lens) target))
