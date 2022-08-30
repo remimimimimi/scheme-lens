@@ -131,3 +131,6 @@
 
 (define (list-ref-nested-lens . indices)
   (apply lens-compose (reverse (map list-ref-lens indices))))
+
+(define (list-refs-lens . indices)
+ (apply lens-join/list (map list-ref-lens indices)))
