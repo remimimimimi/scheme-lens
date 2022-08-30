@@ -2,10 +2,20 @@
 ;;  (export)
 ;;  (import (rnrs)))
 
-(library-directories "./thunderchez")
+;; (library-directories "./thunderchez")
 
 (import (rnrs))
-(import (srfi s1 lists))
+;; (import (srfi s1 lists))
+
+(define (take lis k)
+  (let recur ((lis lis) (k k))
+    (if (zero? k) '()
+        (cons (car lis)
+              (recur (cdr lis) (- k 1))))))
+
+(define (drop lis k)
+  (let iter ((lis lis) (k k))
+    (if (zero? k) lis (iter (cdr lis) (- k 1)))))
 
 ;; Various utils
 (define (split-into-chunks n xs)
