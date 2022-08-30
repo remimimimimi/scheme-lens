@@ -43,8 +43,8 @@
   (define (append-map f l1 l2) (apply append (map f l1 l2)))
   (append-map list keys values))
 
-(define (hashtable-aux-set! table key value)
-  (set-cdr! (hashtable-cell table key) value))
+(define (hashtable-aux-set! table key value default-value)
+  (set-cdr! (hashtable-cell table key default-value) value))
 
 ;;; Lens related functionality
 (define-record lens (getter setter))
@@ -141,7 +141,7 @@
 ;; Hashtable lenses
 (define (hashtable-ref-lens-aux key default-value)
   (define (hashtable-get table) (hashtable-ref table key default-value))
-  (define hashtable-set (immutable-set hashtable-copy (lambda (table value) (hashtable-aux-set! table key value))))
+  (define hashtable-set (immutable-set hashtable-copy (lambda (table value) (hashtable-aux-set! table key value default-value))))
   (make-lens hashtable-get
              hashtable-set))
 (define hashtable-ref-lens
