@@ -51,6 +51,19 @@
      (lens-transform lens value fn))
    target (split-into-chunks 2 lens-and-fns)))
 
+;;; Lens utilities
+(define (lens-compose2 sub-lens super-lens)
+  (define (get target)
+    (lens-view sub-lens (lens-view super-lens target)))
+  (define (set target new-view)
+    (define sub-view (lens-view super-lens target))
+    (define new-sub-view (lens-set sub-lens sub-view new-view))
+    (lens-set super-lens target new-sub-view))
+  (make-lens get set))
+
+(define (lens-compose . args)
+  (fold-left lens-compose2 identity-lens args))
+
 ;;; Lenses
 (define identity-lens
   (make-lens (lambda (x) x) (lambda (x value) value)))
