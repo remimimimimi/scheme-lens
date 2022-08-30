@@ -148,3 +148,6 @@
   (case-lambda
    [(key) (hashtable-ref-lens-aux key #f)]
    [(key default-value) (hashtable-ref-lens-aux key default-value)]))
+
+(define (hashtable-ref-nested-lens . keys)
+  (apply lens-compose (reverse (map hash-ref-lens keys))))
