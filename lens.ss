@@ -43,6 +43,9 @@
   (define (append-map f l1 l2) (apply append (map f l1 l2)))
   (append-map list keys values))
 
+(define (hashtable-aux-set! table key value)
+  (set-cdr! (hashtable-cell table key) value))
+
 ;;; Lens related functionality
 (define-record lens (getter setter))
 
