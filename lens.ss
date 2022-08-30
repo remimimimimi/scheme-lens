@@ -107,3 +107,6 @@
 (define eighth-lens (list-ref-lens 7))
 (define ninth-lens (list-ref-lens 8))
 (define tenth-lens (list-ref-lens 9))
+
+(define (list-ref-nested-lens . indices)
+  (apply lens-compose (reverse (map list-ref-lens indices))))
