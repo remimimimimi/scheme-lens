@@ -26,6 +26,9 @@
 (define (lens-view lens target)
   ((lens-getter lens) target))
 
+(define (lens-view/list target . lenses)
+  (map (lambda (lens) (lens-view lens target)) lenses))
+
 (define (lens-set lens target new-view)
   ((lens-setter lens) target new-view))
 
