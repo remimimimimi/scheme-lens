@@ -31,7 +31,7 @@
 (define (immutable-set copy-fn set-fn!)
   (lambda (value target)
     (define value-copy (copy-fn value))
-    (set-fn! value target)
+    (set-fn! value-copy target)
     value-copy))
 
 ;;; Lens related functionality
