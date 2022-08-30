@@ -21,6 +21,14 @@
     (set-fn! value-copy target)
     value-copy))
 
+(define (list-ref-set lst n new-value)
+  ;; (assert (or (< n 0) (>= n (length lst))))
+  (define (list-ref-set-aux lst n)
+    (if (= n 0)
+        (cons new-value (cdr lst))
+        (cons (car lst) (list-ref-set-aux (cdr lst) (- n 1)))))
+  (list-ref-set-aux lst n))
+
 ;;; Lens related functionality
 (define-record lens (getter setter))
 
