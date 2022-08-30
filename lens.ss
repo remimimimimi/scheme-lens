@@ -40,6 +40,8 @@
      (lens-set lens value new-value))
    target (split-into-chunks 2 lens-and-new-values)))
 
+(define (lens-transform lens target transformer)
+  ((lens-setter lens) target (transformer (lens-view lens target))))
 
 ;;; Lenses
 (define identity-lens
