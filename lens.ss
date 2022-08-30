@@ -92,3 +92,8 @@
 (define cdadr-lens (lens-compose cdr-lens cadr-lens))
 (define caddr-lens (lens-compose car-lens cddr-lens))
 (define cdddr-lens (lens-compose cdr-lens cddr-lens))
+
+;; List lenses
+(define (list-ref-lens n)
+  (make-lens (lambda (lst) (list-ref lst n))
+             (lambda (lst new-view) (list-ref-set lst n new-view))))
