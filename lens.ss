@@ -2,31 +2,17 @@
 ;;  (export)
 ;;  (import (rnrs)))
 
+(library-directories "./thunderchez")
+
 (import (rnrs))
+(import (srfi s1 lists))
 
-;;; Helper functions
-(define (take n xs)
-  (let loop ((n n) (xs xs) (zs (list)))
-    (if (or (zero? n) (null? xs))
-        (reverse zs)
-        (loop (- n 1) (cdr xs)
-              (cons (car xs) zs)))))
-
-(define (split-by n l)
-  (let ((size (quotient (length l) n)))
-    (apply chunk-list l (make-list size n))))
-
-(define (split-by n l)
-  (let ((size (quotient (length l) n)))
-    (apply chunk-list l (make-list size n))))
-
-(define (chunks n xs)
-  (define (divisor? m n)
-    (= 0 (remainder m n)))
-  (if (divisor? (length xs) n)
-      (begin
-        (define len (/ (length x) n)))))
-
+(define (split-into-chunks n xs)
+  (if (null? xs)
+      '()
+      (let ((first-chunk (take xs n))
+            (rest (drop xs n)))
+        (cons first-chunk (split-into-chunks n rest)))))
 
 (define (immutable-set copy-fn set-fn!)
   (lambda (value target)
@@ -43,11 +29,14 @@
 (define (lens-set lens target new-view)
   ((lens-setter lens) target new-view))
 
-(define (lens-view/list target . lenses)
-  (map (lambda (lens) (lens-view lens target)) lenses))
+(define (lens-set/list target . lens-and-new-values)
+  (fold-left
+   (lambda (value lens-and-new-value)
+     (define lens (car lens-and-new-value))
+     (define new-value (cadr lens-and-new-value))
+     (lens-set lens value new-value))
+   target (split-into-chunks 2 lens-and-new-values)))
 
-(define (lens-set/list target . lenses)
-  (fold-left (lambda (value lens)) target lenses))
 
 ;;; Lenses
 (define identity-lens
